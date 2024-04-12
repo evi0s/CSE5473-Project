@@ -1,0 +1,36 @@
+services:
+  victim:
+    container_name: victim
+    build: victim/.
+    environment:
+      - DISPLAY=:0
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    networks:
+      labbr:
+        ipv4_address: 10.254.254.100
+
+  attacker:
+    container_name: attacker
+    build: attacker/.
+    stdin_open: true
+    tty: true
+    ports:
+      - "80"
+    networks:
+      labbr:
+        ipv4_address: 10.254.254.101
+    depends_on:
+      - victim
+    sysctls:
+      - net.ipv4.ip_forward=1
+    cap_add:
+      - NET_ADMIN
+
+networks:
+  labbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.254.254.0/24
+          gateway: 10.254.254.254
