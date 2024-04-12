@@ -6,7 +6,7 @@ WORKDIR /root
 COPY sslstrip.ts /root/sslstrip.ts
 
 RUN npm install typescript @types/node && \
-    npx tsc sslstrip.ts
+    npx tsc --lib "ES2021.String" sslstrip.ts
 
 
 # Runner

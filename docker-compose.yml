@@ -6,6 +6,7 @@ services:
       - DISPLAY=:0
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    shm_size: "2gb"
     networks:
       labbr:
         ipv4_address: 10.254.254.100
