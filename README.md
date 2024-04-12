@@ -66,6 +66,14 @@ docker logs victim
 After that, browse any websites using 301/302 HTTPS redirection (e.g., OSU's many websites).
 Notice that all traffic will be marked as insecure using HTTP protocol.
 
+### Shutdown
+
+To shut everything down, use the command below:
+
+```bash
+docker compose down -t 0
+```
+
 ## References
 
 The core idea here is ARP spoofing attack allows all outgoing traffic from victim go through the attacker.
