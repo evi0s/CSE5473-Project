@@ -68,9 +68,9 @@ Notice that all traffic will be marked as insecure using HTTP protocol.
 
 ## References
 
-The core idea here is ARP spoofing attack allows all outgoing traffic of victim go through attacker.
-The attacker uses `iptables` to ask kernel to redirect all TCP traffic that the destination port is 80 (i.e., HTTP) to another local port (e.g., 8080 in this project) before the packet gets forwarded (i.e., `PRE\_ROUTING`).
-Then, the attacker can manipulate the HTTP requests with their local server ([sslstrip.ts](attacker/sslstrip.ts) in this project).
+The core idea here is ARP spoofing attack allows all outgoing traffic from victim go through the attacker.
+The attacker uses `iptables` to ask kernel to redirect all TCP traffic that the destination port is 80 (i.e., HTTP) to another local port (e.g., 8080 in this project) before the packet gets forwarded (i.e., `PRE_ROUTING`).
+Then, the attacker can now manipulate the HTTP requests with their local server ([sslstrip.ts](attacker/sslstrip.ts) in this project).
 In particular, in this project all HTTP requests are intercepted and proxied by `sslstrip.ts`, that `sslstrip.ts` intercepts the original HTTP requests, makes the actual HTTPS requests for the victim to the remote servers, and sends back the responses from remote to victim.
 
 ### More articles
