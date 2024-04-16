@@ -18,10 +18,10 @@ const onRequest = (req: http.IncomingMessage, res: http.ServerResponse) => {
     const proxy = https.request(options, (requestRes: http.IncomingMessage) => {
         console.log(`[proxy] proxy request got response, writing back to client...`);
         let newHeaders = requestRes.headers;
+        if ("strict-transport-security" in newHeaders) {
+            delete newHeaders["strict-transport-security"];
+        }
         if ("content-type" in newHeaders && newHeaders['content-type'].substr(0, 9) == 'text/html') {
-            if ("strict-transport-security" in newHeaders) {
-                delete newHeaders["strict-transport-security"];
-            }
             for (let header in newHeaders) {
                 if (newHeaders[header] instanceof Array) {
                     newHeaders[header] = (<Array<string>> newHeaders[header]).map(i => i.replaceAll("https://", "http://"))
@@ -52,6 +52,9 @@ const onRequest = (req: http.IncomingMessage, res: http.ServerResponse) => {
                 });
             });
         } else {
+            if (requestRes.statusCode === 302 || requestRes.statusCode === 301) {
+                newHeaders["location"] = newHeaders["location"].replaceAll("https://", "http://");
+            }
             res.writeHead(requestRes.statusCode, newHeaders);
             requestRes.pipe(res, { end: true });
         }
